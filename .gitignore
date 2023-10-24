@@ -193,3 +193,11 @@ git_stats/*
 StyleCop.Cache
 bin
 obj
+*.vsidx
+*.vsidx
+*.vsidx
+*.vsidx
+PolitikKollen/.vs/PolitikKollen/FileContentIndex/51e3287f-8522-4fd0-a1ee-aa34d413bc8d.vsidx
+*.vsidx
+*.vsidx
+PolitikKollen/PresentationLayer/obj/Debug/net6.0-windows/PresentationLayer_MarkupCompile.i.cache
