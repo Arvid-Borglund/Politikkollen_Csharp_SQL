@@ -345,3 +345,8 @@ ASALocalRun/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.bin
+PolitikKollen/.vs/PolitikKollen/v17/.suo
+*.v2
+*.vsidx
+*.v2
