@@ -1,0 +1,241 @@
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Rider IDE
+.idea/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# JetBrains Rider
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+**/Properties/launchSettings.json
+
+# T4 Code generation tool
+*.tt.h
+*.tt
+*.ttinclude
+
+# Visual Studio for Mac
+.vscode/
+.vscode/
+
+# Rider IDE
+.idea/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# T4 Code generation tool
+*.tt.h
+*.tt
+*.ttinclude
+
+# Visual Studio for Mac
+.vscode/
+.vscode/
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider IDE
+.idea/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# T4 Code generation tool
+*.tt.h
+*.tt
+*.ttinclude
+
+# Visual Studio for Mac
+.vscode/
+.vscode/
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# T4 Code generation tool
+*.tt.h
+*.tt
+*.ttinclude
+
+# Visual Studio for Mac
+.vscode/
+.vscode/
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# T4 Code generation tool
+*.tt.h
+*.tt
+*.ttinclude
+
+# Visual Studio for Mac
+.vscode/
+.vscode/
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# T4 Code generation tool
+*.tt.h
+*.tt
+*.ttinclude
+
+# Visual Studio for Mac
+.vscode/
+.vscode/
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# T4 Code generation tool
+*.tt.h
+*.tt
+*.ttinclude
+
+# Visual Studio for Mac
+.vscode/
+.vscode/
+
+# Rider
+.idea/
