@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/PolitikKollen/DAL/App.config
+/PolitikKollen/PresentationLayer/App.config

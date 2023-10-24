@@ -38,3 +38,17 @@ C:\Users\admin001\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-
 C:\Users\admin001\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\obj\Debug\net6.0-windows\PresentationLayer.pdb
 C:\Users\admin001\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\obj\Debug\net6.0-windows\PresentationLayer.genruntimeconfig.cache
 C:\Users\admin001\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\obj\Debug\net6.0-windows\ref\PresentationLayer.dll
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\System.Data.SqlClient.dll
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\runtimes\win-arm64\native\sni.dll
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\runtimes\win-x64\native\sni.dll
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\runtimes\win-x86\native\sni.dll
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\Controller.dll
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\DAL.dll
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\Controller.pdb
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\DAL.pdb
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\DAL.dll.config
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\obj\Debug\net6.0-windows\PresentationLayer.csproj.AssemblyReference.cache
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\obj\Debug\net6.0-windows\PresentationLayer.csproj.CopyComplete
+C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\PresentationLayer.dll.config

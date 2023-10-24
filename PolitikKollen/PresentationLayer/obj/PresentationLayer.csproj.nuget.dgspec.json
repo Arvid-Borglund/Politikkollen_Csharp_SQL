@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin001\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\PresentationLayer.csproj": {}
+    "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\PresentationLayer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin001\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\PresentationLayer.csproj": {
+    "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\Controller\\Controller.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin001\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\PresentationLayer.csproj",
-        "projectName": "PresentationLayer",
-        "projectPath": "C:\\Users\\admin001\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\PresentationLayer.csproj",
-        "packagesPath": "C:\\Users\\admin001\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin001\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\obj\\",
+        "projectUniqueName": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\Controller\\Controller.csproj",
+        "projectName": "Controller",
+        "projectPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\Controller\\Controller.csproj",
+        "packagesPath": "C:\\Users\\Jakob\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\Controller\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\admin001\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Jakob\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -27,7 +27,11 @@
         "frameworks": {
           "net6.0-windows7.0": {
             "targetAlias": "net6.0-windows",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\DAL.csproj": {
+                "projectPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\DAL.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -58,7 +62,133 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\DAL.csproj",
+        "projectName": "DAL",
+        "projectPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\DAL.csproj",
+        "packagesPath": "C:\\Users\\Jakob\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Jakob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0-windows7.0": {
+            "targetAlias": "net6.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0-windows7.0": {
+          "targetAlias": "net6.0-windows",
+          "dependencies": {
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\PresentationLayer.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\PresentationLayer.csproj",
+        "projectName": "PresentationLayer",
+        "projectPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\PresentationLayer.csproj",
+        "packagesPath": "C:\\Users\\Jakob\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\PresentationLayer\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Jakob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0-windows7.0": {
+            "targetAlias": "net6.0-windows",
+            "projectReferences": {
+              "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\Controller\\Controller.csproj": {
+                "projectPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\Controller\\Controller.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0-windows7.0": {
+          "targetAlias": "net6.0-windows",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
