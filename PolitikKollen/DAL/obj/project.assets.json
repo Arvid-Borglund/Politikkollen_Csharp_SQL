@@ -8,19 +8,19 @@
     "net6.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Jakob\\.nuget\\packages\\": {}
+    "C:\\Users\\admin001\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\DAL.csproj",
+      "projectUniqueName": "C:\\Users\\admin001\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\DAL.csproj",
       "projectName": "DAL",
-      "projectPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\DAL.csproj",
-      "packagesPath": "C:\\Users\\Jakob\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jakob\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\obj\\",
+      "projectPath": "C:\\Users\\admin001\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\DAL.csproj",
+      "packagesPath": "C:\\Users\\admin001\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\admin001\\Documents\\GitHub\\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\\PolitikKollen\\DAL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Jakob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\admin001\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -64,7 +64,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
