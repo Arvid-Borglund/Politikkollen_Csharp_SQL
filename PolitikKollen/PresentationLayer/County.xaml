@@ -11,11 +11,80 @@
             <ColumnDefinition Width="290*"/>
             <ColumnDefinition Width="511*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="txtBoxAddCounty" HorizontalAlignment="Left" Margin="80,59,0,0" TextWrapping="Wrap" Text="Add county" VerticalAlignment="Top" Width="120" Background="White" SelectionOpacity="0.1"/>
-        <Button x:Name="btnAddCounty" Content="Add County" HorizontalAlignment="Left" Margin="230,58,0,0" VerticalAlignment="Top" Width="76" Grid.ColumnSpan="2" Click="btnAddCounty_Click"/>
-        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="80,83,456,167" Grid.ColumnSpan="2"/>
-        <Label Grid.Column="1" Content="Label" HorizontalAlignment="Center" Margin="0,198,0,0" VerticalAlignment="Top"/>
-        <Rectangle Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="236,324,0,0" Stroke="Black" VerticalAlignment="Top" Width="100"/>
+        <TextBox x:Name="txtBoxAddCounty" HorizontalAlignment="Left" Margin="80,287,0,0" TextWrapping="Wrap" Text="Add county" VerticalAlignment="Top" Width="120" Background="White" SelectionOpacity="0.1"/>
+        <Button x:Name="btnAddCounty" Content="Add County" HorizontalAlignment="Left" Margin="80,326,0,0" VerticalAlignment="Top" Width="76" Click="btnAddCounty_Click"/>
+        <DataGrid x:Name="dGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="80,83,70,167" SelectionChanged="dGrid_SelectionChanged" AutoGenerateColumns="False" GridLinesVisibility="Horizontal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="County Name" Binding="{Binding CountyName}" MinWidth="100"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="12" Height="12" Click="DeleteButton_Click" Background="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+
+                                        <Image Name="ImageButton" Source="images/delete.png" Opacity="0.5"/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ImageButton" Property="Opacity" Value="1"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label x:Name="lblOutPut" Content="TESTOUTPUT" HorizontalAlignment="Left" Margin="60,384,0,0" VerticalAlignment="Top" Width="180"/>
+        <DataGrid x:Name="dGridProposals" Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="74,83,59,217" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="County Name" Binding="{Binding CountyName}" MinWidth="100"/>
+                <DataGridTextColumn Header="Proposal Name" Binding="{Binding Proposal}" MinWidth="100"/>
+                <DataGridTextColumn Header="Proposal Description" Binding="{Binding Info}" MinWidth="100"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="12" Height="12" Click="DeleteProposalButton_Click" Background="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+
+                                        <Image Name="ImageButton" Source="images/delete.png" Opacity="0.5"/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ImageButton" Property="Opacity" Value="1"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="12" Height="12" Click="EditProposalButton_Click" Background="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+
+                                        <Image Name="ImageButton" Source="images/writing.png" Opacity="0.5"/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ImageButton" Property="Opacity" Value="1"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBox x:Name="txtBoxProposalInfo" Grid.Column="1" HorizontalAlignment="Center" Margin="0,235,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="392" Height="101"/>
+        <Button x:Name="btnAddProposal" Grid.Column="1" Content="Add Proposal" HorizontalAlignment="Left" Margin="74,369,0,0" VerticalAlignment="Top" Height="28" Width="91" Click="btnAddProposal_Click"/>
 
     </Grid>
 </Window>

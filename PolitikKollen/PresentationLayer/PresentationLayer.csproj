@@ -8,13 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\delete.png" />
+    <None Remove="Images\writing.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Controller\Controller.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="App.config">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
+    <Resource Include="Images\delete.png" />
+    <Resource Include="Images\writing.png" />
   </ItemGroup>
 
 </Project>
