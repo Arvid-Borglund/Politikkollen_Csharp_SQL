@@ -1,0 +1,32 @@
+﻿<Window x:Class="PresentationLayer.Citizen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PresentationLayer"
+        mc:Ignorable="d"
+        Title="Citizen" Height="450" Width="800">
+    <Grid>
+        <DataGrid AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <!-- Proposal Column -->
+                <DataGridHyperlinkColumn Header="Proposal" Binding="{Binding Proposal}" Width="*"/>
+
+                <!-- Vote For Checkbox Column -->
+                <DataGridCheckBoxColumn Header="Vote For" Binding="{Binding VoteFor}" Width="Auto"/>
+
+                <!-- T Votes For INT Column -->
+                <DataGridTextColumn Header="T Votes For" Binding="{Binding TVotesFor}" Width="Auto"/>
+
+                <!-- Vote Against Checkbox Column -->
+                <DataGridCheckBoxColumn Header="Vote Against" Binding="{Binding VoteAgainst}" Width="Auto"/>
+
+                <!-- T Votes Against INT Column -->
+                <DataGridTextColumn Header="T Votes Against" Binding="{Binding TVotesAgainst}" Width="Auto"/>
+
+                <!-- Total Votes INT Column -->
+                <DataGridTextColumn Header="Total Votes" Binding="{Binding TotalVotes}" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

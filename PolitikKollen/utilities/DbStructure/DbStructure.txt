@@ -6,7 +6,7 @@ CREATE TABLE County(
 CREATE TABLE Citizen(
     BankIdHash VARBINARY(64),
     Salt VARBINARY(64),
-    UserName VARCHAR(255),
+    UserName VARCHAR(255) UNIQUE,
     CountyName VARCHAR(255),
     CONSTRAINT PK_Citizen_BankId PRIMARY KEY(BankIdHash),
     CONSTRAINT FK_Citizen_CountyName FOREIGN KEY(CountyName) REFERENCES County(CountyName)
@@ -22,6 +22,7 @@ CREATE TABLE Admin(
 CREATE TABLE Proposals(
     CountyName VARCHAR(255),
     Proposal VARCHAR(255),
+    Info VARCHAR(1024),
     CONSTRAINT PK_Proposals_County_Proposal PRIMARY KEY(CountyName, Proposal),
     CONSTRAINT FK_Proposals_CountyName FOREIGN KEY(CountyName) REFERENCES County(CountyName)
 );
@@ -30,6 +31,8 @@ CREATE TABLE Opinion(
     BankIdHash VARBINARY(64),
     Proposal VARCHAR(255),
     CountyName VARCHAR(255),
+    VoteFor BIT,
+    VoteAgainst BIT,
     CONSTRAINT PK_Opinion_BankIdHash_Proposal_CountyName PRIMARY KEY(BankIdHash, Proposal, CountyName),
     CONSTRAINT FK_Opinion_Citizen_BankIdHash FOREIGN KEY(BankIdHash) REFERENCES Citizen(BankIdHash),
     CONSTRAINT FK_Opinion_Proposals_Proposal_CountyName FOREIGN KEY(CountyName, Proposal) REFERENCES Proposals(CountyName, Proposal),

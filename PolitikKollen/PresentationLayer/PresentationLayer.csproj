@@ -17,8 +17,14 @@
   </ItemGroup>
 
   <ItemGroup>
+
+    <None Update="App.config">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+
     <Resource Include="Images\delete.png" />
     <Resource Include="Images\writing.png" />
+
   </ItemGroup>
 
 </Project>
