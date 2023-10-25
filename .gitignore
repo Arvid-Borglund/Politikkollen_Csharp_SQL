@@ -16,6 +16,20 @@
 # Mono auto generated files
 mono_crash.*
 
+# Obj directory
+**/obj/
+
+# NuGet related files (specific ones mentioned in the image)
+*.nuspec
+*.props
+*.targets
+*.assets.json
+*.cache
+
+# Generated files
+*.g.i.cs
+*.editorconfig
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
