@@ -1,0 +1,19 @@
+﻿<Window x:Class="PresentationLayer.County"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PresentationLayer"
+        mc:Ignorable="d"
+        Title="County" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="290*"/>
+            <ColumnDefinition Width="511*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="txtBoxAddCounty" HorizontalAlignment="Left" Margin="80,59,0,0" TextWrapping="Wrap" Text="Add county" VerticalAlignment="Top" Width="120" Background="White" SelectionOpacity="0.1"/>
+        <Button x:Name="btnAddCounty" Content="Add County" HorizontalAlignment="Left" Margin="230,58,0,0" VerticalAlignment="Top" Width="76" Grid.ColumnSpan="2" Click="btnAddCounty_Click"/>
+        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="80,83,456,167" Grid.ColumnSpan="2"/>
+
+    </Grid>
+</Window>

@@ -18,5 +18,10 @@ namespace Controller
             dal.test();
 
         }
+
+        public void addCounty(String county)
+        {
+            dal.addCounty(county);
+        }
     }
 }

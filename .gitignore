@@ -398,3 +398,10 @@ FodyWeavers.xsd
 *.sln.iml
 /PolitikKollen/DAL/App.config
 /PolitikKollen/PresentationLayer/App.config
+*.v2
+*.v2
+*.v2
+PolitikKollen/.vs/PolitikKollen/v17/.suo
+*.bin
+PolitikKollen/PresentationLayer/App.config
+*.cache

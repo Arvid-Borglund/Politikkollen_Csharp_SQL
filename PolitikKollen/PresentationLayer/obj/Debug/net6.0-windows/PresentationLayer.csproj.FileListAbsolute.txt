@@ -48,7 +48,6 @@ C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-inf
 C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\DAL.dll
 C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\Controller.pdb
 C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\DAL.pdb
-C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\DAL.dll.config
 C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\obj\Debug\net6.0-windows\PresentationLayer.csproj.AssemblyReference.cache
 C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\obj\Debug\net6.0-windows\PresentationLayer.csproj.CopyComplete
 C:\Users\Jakob\Documents\GitHub\ht23-infc20-database-project-assignment-ht23-infc20-rat-pig\PolitikKollen\PresentationLayer\bin\Debug\net6.0-windows\PresentationLayer.dll.config
