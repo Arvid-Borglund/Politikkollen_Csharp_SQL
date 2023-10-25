@@ -15,6 +15,7 @@
         <Button x:Name="btnAddCounty" Content="Add County" HorizontalAlignment="Left" Margin="230,58,0,0" VerticalAlignment="Top" Width="76" Grid.ColumnSpan="2" Click="btnAddCounty_Click"/>
         <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="80,83,456,167" Grid.ColumnSpan="2"/>
         <Label Grid.Column="1" Content="Label" HorizontalAlignment="Center" Margin="0,198,0,0" VerticalAlignment="Top"/>
+        <Rectangle Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="236,324,0,0" Stroke="Black" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Window>
