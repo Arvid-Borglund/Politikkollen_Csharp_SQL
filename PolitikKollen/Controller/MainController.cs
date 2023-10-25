@@ -22,11 +22,6 @@ namespace Controller
 
         }
 
-        public void Test()
-        {
-            dal.test();
-
-        }
 
         public int addCounty(String county)
         {
