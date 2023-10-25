@@ -25,5 +25,19 @@ namespace DAL
                 }
             }
         }
+
+        public void addCounty(String county)
+        {
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
+            {
+                SqlCommand command = new("uspAddCounty", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@CountyName", county);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+
     }
 }
