@@ -14,7 +14,7 @@ namespace DAL
         public static SqlConnection GetConnection()
         {
             string connectionString =
-            ConfigurationManager.ConnectionStrings["INFC20DemoConnectionString"].ConnectionString;
+            ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
             SqlConnectionStringBuilder builder = new(connectionString);
             SqlConnection connection = new(builder.ConnectionString);
             return connection;

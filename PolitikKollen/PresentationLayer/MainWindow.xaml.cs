@@ -25,11 +25,11 @@ namespace PresentationLayer
             InitializeComponent();
         }
 
-        Controller.MainController controller = new();
+        
 
         private void btnTest_Click(object sender, RoutedEventArgs e)
         {
-            controller.Test();
+            
         }
     }
 }

@@ -128,3 +128,5 @@ nCrunchTemp_*
 !.vscode/extensions.json
 *.code-workspace
 
+/PolitikKollen/PresentationLayer/App.config
+/PolitikKollen/PresentationLayer/App.xaml
