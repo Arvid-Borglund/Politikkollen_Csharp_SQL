@@ -73,7 +73,9 @@ namespace DAL
             {
                 try
                 {
+
                     return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "pk.uspGetAllCounties");
+
                 }
                 catch (SqlException ex)
                 {
@@ -95,116 +97,256 @@ namespace DAL
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspDeleteCounty", connection);
-                command.CommandType = CommandType.StoredProcedure;
+                SqlTransaction transaction = null;
+                try
+                {
+                    connection.Open();
 
-                // Add the CountyName parameter to the command
-                command.Parameters.AddWithValue("@CountyName", countyName);
+                    // Begin the transaction
+                    transaction = DataAdapterHelper.BeginTransaction(connection);
 
-                // Add a return parameter
-                SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int);
-                returnParameter.Direction = ParameterDirection.ReturnValue;
-                command.Parameters.Add(returnParameter);
+                    SqlCommand command = new SqlCommand("pk.uspDeleteCounty", connection, transaction);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                    // Add the CountyName parameter to the command
+                    command.Parameters.AddWithValue("@CountyName", countyName);
 
-                // Get the return value
-                int result = (int)command.Parameters["@ReturnVal"].Value;
+                    // Add a return parameter
+                    SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int);
+                    returnParameter.Direction = ParameterDirection.ReturnValue;
+                    command.Parameters.Add(returnParameter);
 
-                return result;
+                    command.ExecuteNonQuery();
+
+                    // Commit the transaction
+                    DataAdapterHelper.CommitTransaction(transaction);
+
+                    // Get the return value
+                    int result = (int)command.Parameters["@ReturnVal"].Value;
+
+                    return result;
+                }
+                catch (SqlException ex)
+                {
+                    // Rollback the transaction in case of any errors
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    // Pass the exception to the ErrorHandler
+                    ErrorHandler.HandleSqlException(ex);
+                    throw; // Rethrow the exception after handling, so it can be caught and managed outside if needed
+                }
+                catch (Exception ex)
+                {
+                    // Rollback the transaction in case of any errors
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    // Handle general exceptions
+                    ErrorHandler.HandleException(ex);
+                    throw; // Rethrow the exception after handling
+                }
             }
         }
+
 
         public DataTable GetAllProposals()
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "pk.uspGetProposalPrimaryKeys");
+
+                try
+                {
+                    return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "uspGetProposalPrimaryKeys");
+                }
+                catch (SqlException ex)
+                {
+                    // Pass the exception to the ErrorHandler
+                    ErrorHandler.HandleSqlException(ex);
+                    throw; // Rethrow the exception after handling, so it can be caught and managed outside if needed
+                }
+                catch (Exception ex)
+                {
+                    // Handle general exceptions
+                    ErrorHandler.HandleException(ex);
+                    throw; // Rethrow the exception after handling
+                }
+
             }
         }
+
 
         public int CreateProposal(string countyName, string proposal, string info)
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspCreateProposal", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@CountyName", countyName);
-                command.Parameters.AddWithValue("@Proposal", proposal);
-                command.Parameters.AddWithValue("@Info", info);
-
-                // Output parameter for @Result
-                SqlParameter resultOutputParameter = new SqlParameter("@Result", SqlDbType.Int)
-                {
-                    Direction = ParameterDirection.Output
-                };
-                command.Parameters.Add(resultOutputParameter);
-
                 connection.Open();
 
-                // Execute the stored procedure
-                command.ExecuteNonQuery();
-
-                // Retrieve the output parameter's value
-                if (resultOutputParameter.Value != DBNull.Value)
+                // Start the transaction
+                using (SqlTransaction transaction = DataAdapterHelper.BeginTransaction(connection))
                 {
-                    return (int)resultOutputParameter.Value;
-                }
+                    try
+                    {
+                        SqlCommand command = new SqlCommand("pk.uspCreateProposal", connection, transaction);
+                        command.CommandType = CommandType.StoredProcedure;
 
-                // Handle the case where the output parameter is DBNull.Value (null)
-                return -1; // You can choose an appropriate error code or value here
+                        // Add the parameters
+                        command.Parameters.AddWithValue("@CountyName", countyName);
+                        command.Parameters.AddWithValue("@Proposal", proposal);
+                        command.Parameters.AddWithValue("@Info", info);
+
+                        // Output parameter for @Result
+                        SqlParameter resultOutputParameter = new SqlParameter("@Result", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(resultOutputParameter);
+
+                        // Execute the stored procedure
+                        command.ExecuteNonQuery();
+
+                        // Commit the transaction
+                        DataAdapterHelper.CommitTransaction(transaction);
+
+                        // Retrieve the output parameter's value
+                        if (resultOutputParameter.Value != DBNull.Value)
+                        {
+                            return (int)resultOutputParameter.Value;
+                        }
+
+                        // Handle the case where the output parameter is DBNull.Value (null)
+                        return -1; // You can choose an appropriate error code or value here
+                    }
+                    catch (SqlException ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Pass the exception to the ErrorHandler
+                        ErrorHandler.HandleSqlException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Handle general exceptions
+                        ErrorHandler.HandleException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                }
             }
         }
+
 
 
         public int DeleteProposal(string countyName, string proposal)
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspDeleteProposal", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@CountyName", countyName);
-                command.Parameters.AddWithValue("@Proposal", proposal);
-
                 connection.Open();
 
-                // Since you're deleting data, you can use ExecuteNonQuery which returns the number of rows affected.
-                // If the deletion is successful, it should return 1. Otherwise, it might return 0.
-                return command.ExecuteNonQuery();
+                // Start the transaction
+                using (SqlTransaction transaction = DataAdapterHelper.BeginTransaction(connection))
+                {
+                    try
+                    {
+                        SqlCommand command = new SqlCommand("pk.uspDeleteProposal", connection, transaction);
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Add the parameters
+                        command.Parameters.AddWithValue("@CountyName", countyName);
+                        command.Parameters.AddWithValue("@Proposal", proposal);
+
+                        // Execute the stored procedure
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        // Commit the transaction
+                        DataAdapterHelper.CommitTransaction(transaction);
+
+                        return rowsAffected; // This should be 1 if the deletion was successful, or 0 if no rows were affected.
+                    }
+                    catch (SqlException ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Pass the exception to the ErrorHandler
+                        ErrorHandler.HandleSqlException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Handle general exceptions
+                        ErrorHandler.HandleException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                }
             }
         }
+
 
         public int EditProposal(string countyName, string proposal, string newInfo)
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspEditProposal", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Add parameters
-                command.Parameters.AddWithValue("@CountyName", countyName);
-                command.Parameters.AddWithValue("@Proposal", proposal);
-                command.Parameters.AddWithValue("@NewInfo", newInfo);
-
-                // Add return parameter
-                SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int);
-                returnParameter.Direction = ParameterDirection.ReturnValue;
-                command.Parameters.Add(returnParameter);
-
                 connection.Open();
-                command.ExecuteNonQuery();
 
-                // Capture the return value from the stored procedure
-                int returnValue = (int)returnParameter.Value;
-                // Optional: Handle the return value here, or you can handle it where this method is called
-                return returnValue;
+                // Start the transaction
+                using (SqlTransaction transaction = DataAdapterHelper.BeginTransaction(connection))
+                {
+                    try
+                    {
+                        SqlCommand command = new SqlCommand("pk.uspEditProposal", connection, transaction);
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Add parameters
+                        command.Parameters.AddWithValue("@CountyName", countyName);
+                        command.Parameters.AddWithValue("@Proposal", proposal);
+                        command.Parameters.AddWithValue("@NewInfo", newInfo);
+
+                        // Add return parameter
+                        SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int);
+                        returnParameter.Direction = ParameterDirection.ReturnValue;
+                        command.Parameters.Add(returnParameter);
+
+                        // Execute the stored procedure
+                        command.ExecuteNonQuery();
+
+                        // Commit the transaction
+                        DataAdapterHelper.CommitTransaction(transaction);
+
+                        // Capture the return value from the stored procedure
+                        int returnValue = (int)returnParameter.Value;
+
+                        return returnValue; // Return the result
+                    }
+                    catch (SqlException ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Pass the exception to the ErrorHandler
+                        ErrorHandler.HandleSqlException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Handle general exceptions
+                        ErrorHandler.HandleException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                }
             }
         }
+
 
         public byte[] GetSaltByUserName(string userName, String type)
         {
@@ -226,31 +368,60 @@ namespace DAL
 
             using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
             {
-                SqlCommand command = new SqlCommand(call, connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Input parameter
-                command.Parameters.AddWithValue(Value, userName);
-
-                // Output parameter
-                SqlParameter saltOutputParameter = new SqlParameter("@Salt", SqlDbType.VarBinary, 64);
-                saltOutputParameter.Direction = ParameterDirection.Output;
-                command.Parameters.Add(saltOutputParameter);
-
                 connection.Open();
 
-                // Execute the stored procedure
-                command.ExecuteNonQuery();
-
-                // Retrieve the output parameter value
-                if (saltOutputParameter.Value != DBNull.Value)
+                // Start the transaction
+                using (SqlTransaction transaction = DataAdapterHelper.BeginTransaction(connection))
                 {
-                    salt = (byte[])saltOutputParameter.Value;
+                    try
+                    {
+                        SqlCommand command = new SqlCommand(call, connection, transaction);
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Input parameter
+                        command.Parameters.AddWithValue(Value, userName);
+
+                        // Output parameter
+                        SqlParameter saltOutputParameter = new SqlParameter("@Salt", SqlDbType.VarBinary, 64);
+                        saltOutputParameter.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(saltOutputParameter);
+
+                        // Execute the stored procedure
+                        command.ExecuteNonQuery();
+
+                        // Commit the transaction
+                        DataAdapterHelper.CommitTransaction(transaction);
+
+                        // Retrieve the output parameter value
+                        if (saltOutputParameter.Value != DBNull.Value)
+                        {
+                            salt = (byte[])saltOutputParameter.Value;
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Pass the exception to the ErrorHandler
+                        ErrorHandler.HandleSqlException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Handle general exceptions
+                        ErrorHandler.HandleException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
                 }
             }
 
             return salt; // This will be null if no salt was found for the given UserName
         }
+
 
 
 
@@ -273,35 +444,67 @@ namespace DAL
 
             using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection logic
             {
-                SqlCommand command = new SqlCommand(call, connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Input parameter for BankIdHash
-                command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
-
-                // Output parameters for Exists and Message
-                SqlParameter existsOutputParameter = new SqlParameter("@Exists", SqlDbType.Bit);
-                existsOutputParameter.Direction = ParameterDirection.Output;
-                command.Parameters.Add(existsOutputParameter);
-
-                SqlParameter messageOutputParameter = new SqlParameter("@Message", SqlDbType.NVarChar, 255);
-                messageOutputParameter.Direction = ParameterDirection.Output;
-                command.Parameters.Add(messageOutputParameter);
-
                 connection.Open();
 
-                // Execute the stored procedure
-                command.ExecuteNonQuery();
-
-                // Retrieve the output parameter values
-                if (existsOutputParameter.Value != DBNull.Value)
+                // Start the transaction
+                using (SqlTransaction transaction = DataAdapterHelper.BeginTransaction(connection))
                 {
-                    exists = Convert.ToBoolean(existsOutputParameter.Value);
-                }
+                    try
+                    {
+                        SqlCommand command = new SqlCommand(call, connection, transaction);
+                        command.CommandType = CommandType.StoredProcedure;
 
-                if (messageOutputParameter.Value != DBNull.Value)
-                {
-                    message = Convert.ToString(messageOutputParameter.Value);
+                        // Input parameter for BankIdHash
+                        command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
+
+                        // Output parameters for Exists and Message
+                        SqlParameter existsOutputParameter = new SqlParameter("@Exists", SqlDbType.Bit)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(existsOutputParameter);
+
+                        SqlParameter messageOutputParameter = new SqlParameter("@Message", SqlDbType.NVarChar, 255)
+                        {
+                            Direction = ParameterDirection.Output
+                        };
+                        command.Parameters.Add(messageOutputParameter);
+
+                        // Execute the stored procedure
+                        command.ExecuteNonQuery();
+
+                        // Commit the transaction
+                        DataAdapterHelper.CommitTransaction(transaction);
+
+                        // Retrieve the output parameter values
+                        if (existsOutputParameter.Value != DBNull.Value)
+                        {
+                            exists = Convert.ToBoolean(existsOutputParameter.Value);
+                        }
+
+                        if (messageOutputParameter.Value != DBNull.Value)
+                        {
+                            message = Convert.ToString(messageOutputParameter.Value);
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Pass the exception to the ErrorHandler
+                        ErrorHandler.HandleSqlException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Handle general exceptions
+                        ErrorHandler.HandleException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
                 }
             }
 
@@ -315,167 +518,310 @@ namespace DAL
                 SqlParameter param1 = new SqlParameter("@BankIdHash", bankIdHash);
                 SqlParameter param2 = new SqlParameter("@CountyName", countyName);
 
+
                 return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "pk.uspGetProposalData", param1, param2);
+
             }
         }
+
 
         public string GetCountyByBankIdHash(byte[] bankIdHash)
         {
-            string countyName = null; // Initialize to null. Will store the county name if found.
+            string countyName = null;
 
-            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspGetCountyByBankIdHash", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Input parameter
-                command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
-
-                // Output parameter
-                SqlParameter countyNameOutputParameter = new SqlParameter("@CountyName", SqlDbType.VarChar, 255);
-                countyNameOutputParameter.Direction = ParameterDirection.Output;
-                command.Parameters.Add(countyNameOutputParameter);
-
                 connection.Open();
 
-                // Execute the stored procedure
-                command.ExecuteNonQuery();
-
-                // Retrieve the output parameter value
-                if (countyNameOutputParameter.Value != DBNull.Value)
+                // Begin a new transaction
+                using (SqlTransaction transaction = DataAdapterHelper.BeginTransaction(connection))
                 {
-                    countyName = countyNameOutputParameter.Value.ToString();
+                    try
+                    {
+                        SqlCommand command = new SqlCommand("pk.uspGetCountyByBankIdHash", connection, transaction);
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Input parameter
+                        command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
+
+                        // Output parameter
+                        SqlParameter countyNameOutputParameter = new SqlParameter("@CountyName", SqlDbType.VarChar, 255);
+                        countyNameOutputParameter.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(countyNameOutputParameter);
+
+                        // Execute the stored procedure
+                        command.ExecuteNonQuery();
+
+                        // Retrieve the output parameter value
+                        if (countyNameOutputParameter.Value != DBNull.Value)
+                        {
+                            countyName = countyNameOutputParameter.Value.ToString();
+                        }
+
+                        // Commit the transaction if all operations are successful
+                        DataAdapterHelper.CommitTransaction(transaction);
+                    }
+                    catch (SqlException ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Handle the SQL exception
+                        ErrorHandler.HandleSqlException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Handle general exceptions
+                        ErrorHandler.HandleException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
                 }
             }
 
-            return countyName; // This will be null if no county was found for the given BankIdHash
+            return countyName; // Return the found county name or null if not found
         }
+
 
         public void CreateUser(byte[] bankIdHash, string userName, byte[] salt, string county)
         {
-            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspCreateUser", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Add parameters
-                command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
-                command.Parameters.AddWithValue("@Salt", salt);
-                command.Parameters.AddWithValue("@UserName", userName);
-
-                if (county != null)
-                {
-                    command.Parameters.AddWithValue("@County", county);
-                }
-                else
-                {
-                    command.Parameters.AddWithValue("@County", DBNull.Value);
-                }
-
                 connection.Open();
 
-                // Execute the stored procedure
-                command.ExecuteNonQuery();
+                // Begin a new transaction
+                using (SqlTransaction transaction = DataAdapterHelper.BeginTransaction(connection))
+                {
+                    try
+                    {
+                        SqlCommand command = new SqlCommand("pk.uspCreateUser", connection, transaction);
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Add parameters
+                        command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
+                        command.Parameters.AddWithValue("@Salt", salt);
+                        command.Parameters.AddWithValue("@UserName", userName);
+
+                        // Check for county value and provide the appropriate value to the command
+                        command.Parameters.AddWithValue("@County", county ?? (object)DBNull.Value);
+
+                        // Execute the stored procedure
+                        command.ExecuteNonQuery();
+
+                        // Commit the transaction if all operations are successful
+                        DataAdapterHelper.CommitTransaction(transaction);
+                    }
+                    catch (SqlException ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Handle the SQL exception
+                        ErrorHandler.HandleSqlException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback the transaction in case of an error
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Handle general exceptions
+                        ErrorHandler.HandleException(ex);
+                        throw; // Rethrow the exception after handling
+                    }
+                }
             }
         }
 
-        public void CreateAdmin(byte[] bankIdHash, string AdminName, byte[] salt)
+
+        public void CreateAdmin(byte[] bankIdHash, string adminName, byte[] salt)
         {
-            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspCreateAdmin", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Add parameters
-                command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
-                command.Parameters.AddWithValue("@Salt", salt);
-                command.Parameters.AddWithValue("@AdminName", AdminName);
-
                 connection.Open();
 
-                // Execute the stored procedure
-                command.ExecuteNonQuery();
+                // Start a new transaction
+                using (SqlTransaction transaction = DataAdapterHelper.BeginTransaction(connection))
+                {
+                    try
+                    {
+                        SqlCommand command = new SqlCommand("pk.uspCreateAdmin", connection, transaction);
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Set the parameters
+                        command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
+                        command.Parameters.AddWithValue("@Salt", salt);
+                        command.Parameters.AddWithValue("@AdminName", adminName);
+
+                        // Run the stored procedure
+                        command.ExecuteNonQuery();
+
+                        // If all operations are successful, commit the transaction
+                        DataAdapterHelper.CommitTransaction(transaction);
+                    }
+                    catch (SqlException ex)
+                    {
+                        // In the event of an error, rollback the transaction
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Manage the SQL exception
+                        ErrorHandler.HandleSqlException(ex);
+                        throw; // After handling, rethrow the exception 
+                    }
+                    catch (Exception ex)
+                    {
+                        // In the event of an error, rollback the transaction
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                        // Address general exceptions
+                        ErrorHandler.HandleException(ex);
+                        throw; // After handling, rethrow the exception 
+                    }
+                }
             }
         }
+
 
 
         public (string CitizenName, string CountyName) GetCitizenDataByUserHash(byte[] userHash)
         {
             string citizenName = null;
-            string countyName = null; // Initialize countyName at the start of the method
+            string countyName = null;
+            SqlTransaction transaction = null;
 
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspGetUserDetailsByHash", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Input parameter
-                command.Parameters.Add(new SqlParameter("@UserHash", SqlDbType.VarBinary, 64)).Value = userHash;
-
-                // Output parameters
-                SqlParameter nameOutputParameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 255)
+                try
                 {
-                    Direction = ParameterDirection.Output
-                };
-                command.Parameters.Add(nameOutputParameter);
+                    SqlCommand command = new SqlCommand("pk.uspGetUserDetailsByHash", connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                SqlParameter countyNameOutputParameter = new SqlParameter("@County", SqlDbType.NVarChar, 255)
-                {
-                    Direction = ParameterDirection.Output
-                };
-                command.Parameters.Add(countyNameOutputParameter);
+                    // Input parameter
+                    command.Parameters.Add(new SqlParameter("@UserHash", SqlDbType.VarBinary, 64)).Value = userHash;
 
-                connection.Open();
+                    // Output parameters
+                    SqlParameter nameOutputParameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 255)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(nameOutputParameter);
 
-                // Execute the stored procedure
-                command.ExecuteNonQuery();
+                    SqlParameter countyNameOutputParameter = new SqlParameter("@County", SqlDbType.NVarChar, 255)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(countyNameOutputParameter);
 
-                // Retrieve the output parameters' values
-                if (nameOutputParameter.Value != DBNull.Value)
-                {
-                    citizenName = (string)nameOutputParameter.Value;
+                    connection.Open();
+
+                    // Begin a transaction using the helper method
+                    transaction = DataAdapterHelper.BeginTransaction(connection);
+                    command.Transaction = transaction; // Set the transaction for the command
+
+                    // Execute the stored procedure
+                    command.ExecuteNonQuery();
+
+                    // Commit the transaction using the helper method
+                    DataAdapterHelper.CommitTransaction(transaction);
+
+                    // Retrieve the output parameters' values
+                    if (nameOutputParameter.Value != DBNull.Value)
+                    {
+                        citizenName = (string)nameOutputParameter.Value;
+                    }
+                    if (countyNameOutputParameter.Value != DBNull.Value)
+                    {
+                        countyName = (string)countyNameOutputParameter.Value;
+                    }
                 }
-                if (countyNameOutputParameter.Value != DBNull.Value)
+                catch (SqlException ex)
                 {
-                    countyName = (string)countyNameOutputParameter.Value;
+                    // Handle the SQL exception and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    ErrorHandler.HandleSqlException(ex);
+                    throw; // Rethrow the exception after handling
+                }
+                catch (Exception ex)
+                {
+                    // Handle other potential exceptions and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    ErrorHandler.HandleException(ex);
+                    throw; // Rethrow the exception after handling
                 }
             }
 
             return (citizenName, countyName);
         }
 
+
         public string GetAdminDataByUserHash(byte[] userHash)
         {
             string adminName = null;
+            SqlTransaction transaction = null;
 
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspGetAdminDetailsByHash", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                // Input parameter
-                SqlParameter userHashParameter = new SqlParameter("@UserHash", SqlDbType.VarBinary, 64)
+                try
                 {
-                    Value = userHash
-                };
-                command.Parameters.Add(userHashParameter);
+                    SqlCommand command = new SqlCommand("pk.uspGetAdminDetailsByHash", connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                // Output parameter for Admin Name
-                SqlParameter nameOutputParameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 255)
+                    // Input parameter
+                    SqlParameter userHashParameter = new SqlParameter("@UserHash", SqlDbType.VarBinary, 64)
+                    {
+                        Value = userHash
+                    };
+                    command.Parameters.Add(userHashParameter);
+
+                    // Output parameter for Admin Name
+                    SqlParameter nameOutputParameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 255)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(nameOutputParameter);
+
+                    connection.Open();
+
+                    // Begin a transaction using the helper method
+                    transaction = DataAdapterHelper.BeginTransaction(connection);
+                    command.Transaction = transaction; // Set the transaction for the command
+
+                    // Execute the stored procedure
+                    command.ExecuteNonQuery();
+
+                    // Commit the transaction using the helper method
+                    DataAdapterHelper.CommitTransaction(transaction);
+
+                    // Retrieve the output parameter's value
+                    if (nameOutputParameter.Value != DBNull.Value)
+                    {
+                        adminName = (string)nameOutputParameter.Value;
+                    }
+                }
+                catch (SqlException ex)
                 {
-                    Direction = ParameterDirection.Output
-                };
-                command.Parameters.Add(nameOutputParameter);
+                    // Handle the SQL exception and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
 
-                connection.Open();
-
-                // Execute the stored procedure
-                command.ExecuteNonQuery();
-
-                // Retrieve the output parameter's value
-                if (nameOutputParameter.Value != DBNull.Value)
+                    ErrorHandler.HandleSqlException(ex);
+                    throw; // Rethrow the exception after handling
+                }
+                catch (Exception ex)
                 {
-                    adminName = (string)nameOutputParameter.Value;
+                    // Handle other potential exceptions and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    ErrorHandler.HandleException(ex);
+                    throw; // Rethrow the exception after handling
                 }
             }
 
@@ -483,88 +829,259 @@ namespace DAL
         }
 
 
-        public int deleteUser(byte[] id)
+
+        public int DeleteUser(byte[] id)
         {
+            if (id == null || id.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(id), "ID cannot be null or empty.");
+            }
+
             int result = 0;
+            SqlTransaction transaction = null;
 
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspDeleteCitizen", connection);
-                command.CommandType = CommandType.StoredProcedure;
+                try
+                {
+                    SqlCommand command = new SqlCommand("pk.uspDeleteCitizen", connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                // Add the parameters
-                command.Parameters.AddWithValue("@BankIdHash", id);
+                    // Add the parameters
+                    command.Parameters.AddWithValue("@BankIdHash", id);
 
-                // Add output parameter
-                SqlParameter outputParam = new SqlParameter("@Result", SqlDbType.Int);
-                outputParam.Direction = ParameterDirection.Output;
-                command.Parameters.Add(outputParam);
+                    // Add output parameter
+                    SqlParameter outputParam = new SqlParameter("@Result", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(outputParam);
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                    connection.Open();
 
-                // Retrieve the value of the output parameter
-                result = (int)command.Parameters["@Result"].Value;
+                    // Begin a transaction using the helper method
+                    transaction = DataAdapterHelper.BeginTransaction(connection);
+                    command.Transaction = transaction; // Set the transaction for the command
+
+                    command.ExecuteNonQuery();
+
+                    // Commit the transaction using the helper method
+                    DataAdapterHelper.CommitTransaction(transaction);
+
+                    // Retrieve the value of the output parameter
+                    if (outputParam.Value != DBNull.Value)
+                    {
+                        result = (int)outputParam.Value;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Handle the SQL exception and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    ErrorHandler.HandleSqlException(ex);
+                    throw; // Rethrow the exception after handling
+                }
+                catch (Exception ex)
+                {
+                    // Handle other potential exceptions and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    ErrorHandler.HandleException(ex);
+                    throw; // Rethrow the exception after handling
+                }
             }
 
             return result;
         }
 
 
+
         public int UpdateCountyNameByBankIDHash(byte[] bankIDHash, string newCountyName)
         {
+            if (bankIDHash == null || bankIDHash.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(bankIDHash), "Bank ID hash cannot be null or empty.");
+            }
+
+            if (string.IsNullOrEmpty(newCountyName))
+            {
+                throw new ArgumentException("New county name cannot be null or empty.", nameof(newCountyName));
+            }
+
+            int returnValue = 0;
+            SqlTransaction transaction = null;
+
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
+
+                try
+                {
+                    
+
                 SqlCommand command = new SqlCommand("pk.uspUpdateCountyNameByBankIDHash", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                // Add parameters
-                command.Parameters.AddWithValue("@BankIDHash", bankIDHash);
-                command.Parameters.AddWithValue("@NewCountyName", newCountyName);
 
-                // Add return parameter
-                SqlParameter returnParameter = new SqlParameter("@Result", SqlDbType.Int);
-                returnParameter.Direction = ParameterDirection.Output;
-                command.Parameters.Add(returnParameter);
+                    // Add parameters
+                    command.Parameters.AddWithValue("@BankIDHash", bankIDHash);
+                    command.Parameters.AddWithValue("@NewCountyName", newCountyName);
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                    // Add return parameter
+                    SqlParameter returnParameter = new SqlParameter("@Result", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(returnParameter);
 
-                // Capture the return value from the stored procedure
-                int returnValue = (int)returnParameter.Value;
+                    connection.Open();
 
-                return returnValue;
+                    // Begin a transaction using the helper method
+                    transaction = DataAdapterHelper.BeginTransaction(connection);
+                    command.Transaction = transaction; // Set the transaction for the command
+
+                    command.ExecuteNonQuery();
+
+                    // Commit the transaction using the helper method
+                    DataAdapterHelper.CommitTransaction(transaction);
+
+                    // Capture the return value from the stored procedure
+                    if (returnParameter.Value != DBNull.Value)
+                    {
+                        returnValue = (int)returnParameter.Value;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Handle the SQL exception and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    ErrorHandler.HandleSqlException(ex);
+                    throw; // Rethrow the exception after handling
+                }
+                catch (Exception ex)
+                {
+                    // Handle other potential exceptions and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    ErrorHandler.HandleException(ex);
+                    throw; // Rethrow the exception after handling
+                }
             }
+
+            return returnValue;
         }
+
 
         public int SaveOpinion(byte[] bankIDHash, string proposal, string countyName, int voteFor, int voteAgainst)
         {
+            ValidateParameters(bankIDHash, proposal, countyName, voteFor, voteAgainst);
+
+            int returnValue = 0;
+            SqlTransaction transaction = null;
+
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspSaveOpinion", connection);
-                command.CommandType = CommandType.StoredProcedure;
+                try
+                {
+                    SqlCommand command = CreateCommand(connection, bankIDHash, proposal, countyName, voteFor, voteAgainst);
 
-                // Add parameters
-                command.Parameters.AddWithValue("@BankIdHash", bankIDHash);
-                command.Parameters.AddWithValue("@Proposal", proposal);
-                command.Parameters.AddWithValue("@CountyName", countyName);
-                command.Parameters.AddWithValue("@VoteFor", voteFor);
-                command.Parameters.AddWithValue("@VoteAgainst", voteAgainst);
+                    connection.Open();
 
-                
-                // Add return parameter
-                SqlParameter returnParameter = new SqlParameter("@Result", SqlDbType.Int);
-                returnParameter.Direction = ParameterDirection.ReturnValue;
-                command.Parameters.Add(returnParameter);
+                    // Begin a transaction using the helper method
+                    transaction = DataAdapterHelper.BeginTransaction(connection);
+                    command.Transaction = transaction; // Set the transaction for the command
 
-                connection.Open();
-                command.ExecuteNonQuery();
 
-                // Capture the return value from the stored procedure
-                int returnValue = (int)returnParameter.Value;
+                    command.ExecuteNonQuery();
 
-                return returnValue;
+                    // Commit the transaction using the helper method
+                    DataAdapterHelper.CommitTransaction(transaction);
+
+                    // Capture the return value from the stored procedure
+                    returnValue = (int)command.Parameters["@Result"].Value;
+                }
+                catch (SqlException ex)
+                {
+                    // Handle the SQL exception and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+
+
+                    ErrorHandler.HandleSqlException(ex);
+                    throw; // Rethrow the exception after handling
+                }
+                catch (Exception ex)
+                {
+                    // Handle other potential exceptions and rollback
+                    if (transaction != null)
+                        DataAdapterHelper.RollbackTransaction(transaction);
+
+                    ErrorHandler.HandleException(ex);
+                    throw; // Rethrow the exception after handling
+                }
             }
+
+            return returnValue;
+        }
+
+        private void ValidateParameters(byte[] bankIDHash, string proposal, string countyName, int voteFor, int voteAgainst)
+        {
+            if (bankIDHash == null || bankIDHash.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(bankIDHash), "Bank ID hash cannot be null or empty.");
+            }
+
+            if (string.IsNullOrEmpty(proposal))
+            {
+                throw new ArgumentException("Proposal cannot be null or empty.", nameof(proposal));
+            }
+
+            if (string.IsNullOrEmpty(countyName))
+            {
+                throw new ArgumentException("County name cannot be null or empty.", nameof(countyName));
+            }
+
+            // Additional validations can be added here if needed
+        }
+
+        private SqlCommand CreateCommand(SqlConnection connection, byte[] bankIDHash, string proposal, string countyName, int voteFor, int voteAgainst)
+        {
+            SqlCommand command = new SqlCommand("pk.uspSaveOpinion", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            // Add parameters
+            command.Parameters.AddWithValue("@BankIdHash", bankIDHash);
+            command.Parameters.AddWithValue("@Proposal", proposal);
+            command.Parameters.AddWithValue("@CountyName", countyName);
+            command.Parameters.AddWithValue("@VoteFor", voteFor);
+            command.Parameters.AddWithValue("@VoteAgainst", voteAgainst);
+
+            // Add return parameter
+            SqlParameter returnParameter = new SqlParameter("@Result", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.ReturnValue
+            };
+            command.Parameters.Add(returnParameter);
+
+            // Debug logs
+            LogDebugInfo(bankIDHash, proposal, countyName, voteFor, voteAgainst);
+
+            return command;
+        }
+
+        private void LogDebugInfo(byte[] bankIDHash, string proposal, string countyName, int voteFor, int voteAgainst)
+        {
+            System.Diagnostics.Debug.WriteLine(BitConverter.ToString(bankIDHash).Replace("-", ""));
+            System.Diagnostics.Debug.WriteLine(proposal);
+            System.Diagnostics.Debug.WriteLine(countyName);
+            System.Diagnostics.Debug.WriteLine(voteFor);
+            System.Diagnostics.Debug.WriteLine(voteAgainst);
         }
 
 
