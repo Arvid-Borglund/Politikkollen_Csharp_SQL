@@ -27,34 +27,69 @@ namespace DAL
                 command.Parameters.Add(returnParameter);
 
                 connection.Open();
-                command.ExecuteNonQuery();
 
-                // Capture the return value from the stored procedure
-                int returnValue = (int)returnParameter.Value;
-                // Optional: Handle the return value here, or you can handle it where this method is called
-                return returnValue;
+                // Start the transaction
+                SqlTransaction transaction = DataAdapterHelper.BeginTransaction(connection);
+                command.Transaction = transaction;
+
+                try
+                {
+                    command.ExecuteNonQuery();
+
+                    // Capture the return value from the stored procedure
+                    int returnValue = (int)returnParameter.Value;
+
+                    // Commit the transaction
+                    DataAdapterHelper.CommitTransaction(transaction);
+
+                    // Optional: Handle the return value here, or you can handle it where this method is called
+                    return returnValue;
+                }
+                catch (SqlException ex)
+                {
+                    // Rollback the transaction in case of any errors
+                    DataAdapterHelper.RollbackTransaction(transaction);
+
+                    // Pass the exception to the ErrorHandler
+                    ErrorHandler.HandleSqlException(ex);
+                    throw; // Rethrow the exception after handling, so it can be caught and managed outside if needed
+                }
+                catch (Exception ex)
+                {
+                    // Rollback the transaction in case of any other kind of errors
+                    DataAdapterHelper.RollbackTransaction(transaction);
+
+                    // Handle general exceptions
+                    ErrorHandler.HandleException(ex);
+                    throw; // Rethrow the exception after handling
+                }
             }
         }
+
 
         public DataTable GetAllCounties()
         {
-            DataTable dt = new DataTable();
-
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspGetAllCounties", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Load the data into the DataTable
-                dt.Load(reader);
-                reader.Close();
+                try
+                {
+                    return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "uspGetAllCounties");
+                }
+                catch (SqlException ex)
+                {
+                    // Pass the exception to the ErrorHandler
+                    ErrorHandler.HandleSqlException(ex);
+                    throw; // Rethrow the exception after handling, so it can be caught and managed outside if needed
+                }
+                catch (Exception ex)
+                {
+                    // Handle general exceptions
+                    ErrorHandler.HandleException(ex);
+                    throw; // Rethrow the exception after handling
+                }
             }
-
-            return dt;
         }
+
 
         public int DeleteCounty(string countyName)
         {
@@ -83,22 +118,10 @@ namespace DAL
 
         public DataTable GetAllProposals()
         {
-            DataTable dt = new DataTable();
-
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("pk.uspGetProposalPrimaryKeys", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Load the data into the DataTable
-                dt.Load(reader);
-                reader.Close();
+                return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "uspGetProposalPrimaryKeys");
             }
-
-            return dt;
         }
 
         public int CreateProposal(string countyName, string proposal, string info)
@@ -287,30 +310,13 @@ namespace DAL
 
         public DataTable GetProposalDataAsDataTable(byte[] bankIdHash, string countyName)
         {
-            DataTable dt = new DataTable();
-
-            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection logic
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                using (SqlCommand command = new SqlCommand("pk.uspGetProposalData", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
+                SqlParameter param1 = new SqlParameter("@BankIdHash", bankIdHash);
+                SqlParameter param2 = new SqlParameter("@CountyName", countyName);
 
-                    // Input parameters
-                    command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
-                    command.Parameters.AddWithValue("@CountyName", countyName);
-
-                    // Open the connection
-                    connection.Open();
-
-                    // Use SqlDataAdapter to fill DataTable
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-                    {
-                        adapter.Fill(dt);
-                    }
-                }
+                return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "GetProposalData", param1, param2);
             }
-
-            return dt;
         }
 
         public string GetCountyByBankIdHash(byte[] bankIdHash)
