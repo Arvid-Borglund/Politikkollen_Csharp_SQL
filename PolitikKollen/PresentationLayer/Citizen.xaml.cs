@@ -58,7 +58,7 @@ namespace PresentationLayer
 
         }
 
-        private void EditButton_Click(object sender, RoutedEventArgs e)
+        private void EditUserCountyButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Are you sure you want to change county?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -85,12 +85,18 @@ namespace PresentationLayer
                 // User confirmed, proceed with deletion
                 int deletionResult = controller.deleteUser(id); // You may need to pass user-specific information to the deleteUser method
 
-                if (deletionResult == 0)
+                if (deletionResult == 1)
                 {
                     // Deletion was successful
-                    MessageBox.Show("Account deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBoxResult exit = MessageBox.Show("Account deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    if (exit == MessageBoxResult.OK)
+                    {
+                        // Exit the application when "OK" is pressed
+                        Application.Current.Shutdown();
+                    }
                 }
-                else if (deletionResult == 1)
+                else if (deletionResult == 0)
                 {
                     // Deletion failed
                     MessageBox.Show("Account deletion failed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

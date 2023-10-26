@@ -157,7 +157,7 @@ namespace DAL
 
                 try
                 {
-                    return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "uspGetProposalPrimaryKeys");
+                    return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "pk.uspGetProposalPrimaryKeys");
                 }
                 catch (SqlException ex)
                 {
@@ -1069,20 +1069,12 @@ namespace DAL
             };
             command.Parameters.Add(returnParameter);
 
-            // Debug logs
-            LogDebugInfo(bankIDHash, proposal, countyName, voteFor, voteAgainst);
+            
 
             return command;
         }
 
-        private void LogDebugInfo(byte[] bankIDHash, string proposal, string countyName, int voteFor, int voteAgainst)
-        {
-            System.Diagnostics.Debug.WriteLine(BitConverter.ToString(bankIDHash).Replace("-", ""));
-            System.Diagnostics.Debug.WriteLine(proposal);
-            System.Diagnostics.Debug.WriteLine(countyName);
-            System.Diagnostics.Debug.WriteLine(voteFor);
-            System.Diagnostics.Debug.WriteLine(voteAgainst);
-        }
+        
 
 
 
