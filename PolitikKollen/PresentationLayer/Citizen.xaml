@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Citizen" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="dGridCitizen" Margin="200,70,104,70" AutoGenerateColumns="False">
+        <DataGrid x:Name="dGridCitizen" Margin="144,93,63,47" AutoGenerateColumns="False" SelectionChanged="dGridCitizen_SelectionChanged">
             <DataGrid.Columns>
                 <!-- Proposal Column -->
                 <DataGridHyperlinkColumn Header="Proposal" Binding="{Binding Proposal}" Width="*"/>
@@ -26,9 +26,55 @@
 
                 <!-- Total Votes INT Column -->
                 <DataGridTextColumn Header="Total Votes" Binding="{Binding TotalVotes}" Width="Auto"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Width="12" Height="12" Click="SaveOpinionButton_Click" Background="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+
+                                        <Image Name="ImageButton" Source="images/writing.png" Opacity="0.5"/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ImageButton" Property="Opacity" Value="1"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="txtBoxUserName" HorizontalAlignment="Left" Margin="32,28,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <ComboBox x:Name="cBoxUser" HorizontalAlignment="Left" Margin="32,70,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="lblUserNameInfo" Content="" HorizontalAlignment="Left" Margin="27,26,0,0" VerticalAlignment="Top"/>
+        <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid Width="197" Canvas.Left="258" Canvas.Top="28">
+                <!-- Adjust Canvas.Left and Canvas.Top as needed -->
+                <!-- ComboBox set with a margin for the button to be overlayed -->
+                <ComboBox x:Name="comboUserCounty" IsEditable="true" IsDropDownOpen="False" IsHitTestVisible="False" SelectionChanged="comboUserCounty_SelectionChanged"/>
+
+                <!-- Overlayed button on top of the ComboBox at its right end -->
+                <Button Width="25" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Click="SaveOpinionButton_Click">
+                    <Button.Resources>
+                        <!-- Style for the Image to change its opacity when the button is hovered -->
+                        <Style TargetType="Image">
+                            <Setter Property="Opacity" Value="0.5"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
+                                    <Setter Property="Opacity" Value="1"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Resources>
+
+                    <Image Source="Images/writing.png" Stretch="Uniform"/>
+                </Button>
+            </Grid>
+        </Canvas>
+        <Button x:Name="btnDeleteUser" Content="Delete User" HorizontalAlignment="Left" Margin="685,32,0,0" VerticalAlignment="Top" Click="btnDeleteUser_Click"/>
+
+
+
     </Grid>
 </Window>

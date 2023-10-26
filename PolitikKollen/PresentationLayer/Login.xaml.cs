@@ -41,23 +41,37 @@ namespace PresentationLayer
             string UserName = UserNameTextBox.Text;
             string BankId = BankIdTextBox.Text;
 
-            byte[] b = controller.ProcessLogin(UserName, BankId);
+            // Check if the fields are empty or whitespace
+            if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(BankId))
+            {
+                MessageBox.Show("Both UserName and BankId fields must be filled out.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-            if (b == null)
+            byte[] UserFound = controller.ProcessLogin(UserName, BankId, "User");
+
+            if (UserFound == null)
             {
                 // Username not found or login failed. Show the GroupBox to create a new account.
                 gBoxNewUserPromt.Visibility = Visibility.Visible;
+
+                txtBoxNewUser.Text = UserName;
+                txtBoxNewBankId.Text = BankId;
+                cBoxCounty.SelectedIndex = 0;
+                MessageBox.Show("User doesn't exist, please create a new user!", "Notification", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
                 // Successful login. Open the Citizen window and hide the GroupBox.
                 gBoxNewUserPromt.Visibility = Visibility.Collapsed;
-                Citizen citizen = new Citizen(b);
+                
+                Citizen citizen = new Citizen(UserFound);
                 citizen.Show();
             }
         }
 
-       
+
+
 
         private void btnSubmitNewUser_Click(object sender, RoutedEventArgs e)
         {
@@ -75,9 +89,9 @@ namespace PresentationLayer
             // If all fields are filled in, proceed to create the new citizen
             controller.CreateNewCitizen(user, bankID, county);
 
-            byte[] b = controller.ProcessLogin(user, bankID);
+            byte[] UserHash = controller.ProcessLogin(user, bankID, "User");
             gBoxNewUserPromt.Visibility = Visibility.Collapsed;
-            Citizen citizen = new Citizen(b);
+            Citizen citizen = new Citizen(UserHash);
             citizen.Show();
         }
     }

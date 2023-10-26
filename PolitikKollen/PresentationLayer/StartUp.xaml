@@ -1,0 +1,14 @@
+﻿<Window x:Class="PresentationLayer.StartUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PresentationLayer"
+        mc:Ignorable="d"
+        Title="StartUp" Height="450" Width="800">
+    <Grid>
+        <Button x:Name="btnUser" Content="User" HorizontalAlignment="Left" Margin="239,181,0,0" VerticalAlignment="Top" Height="62" Width="100" Click="btnUser_Click"/>
+        <Button x:Name="btnAdmin" Content="Button" HorizontalAlignment="Left" Margin="486,181,0,0" VerticalAlignment="Top" Height="62" Width="108" Click="btnAdmin_Click"/>
+
+    </Grid>
+</Window>
