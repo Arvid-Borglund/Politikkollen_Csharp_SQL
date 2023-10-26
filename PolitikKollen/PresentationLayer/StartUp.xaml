@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="StartUp" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnUser" Content="User" HorizontalAlignment="Left" Margin="239,181,0,0" VerticalAlignment="Top" Height="62" Width="100" Click="btnUser_Click"/>
-        <Button x:Name="btnAdmin" Content="Button" HorizontalAlignment="Left" Margin="486,181,0,0" VerticalAlignment="Top" Height="62" Width="108" Click="btnAdmin_Click"/>
+        <Button x:Name="btnUser" Content="User" HorizontalAlignment="Left" Margin="241,174,0,0" VerticalAlignment="Top" Height="69" Width="113" Click="btnUser_Click"/>
+        <Button x:Name="btnAdmin" Content="Admin" HorizontalAlignment="Left" Margin="442,174,0,0" VerticalAlignment="Top" Height="70" Width="108" Click="btnAdmin_Click"/>
 
     </Grid>
 </Window>
