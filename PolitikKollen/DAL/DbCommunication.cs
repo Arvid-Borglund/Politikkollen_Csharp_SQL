@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics.Metrics;
 
 namespace DAL
 {
@@ -478,8 +479,7 @@ namespace DAL
 
         public int deleteUser(byte[] id)
         {
-
-            int success = 0;
+            int result = 0;
 
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
@@ -489,12 +489,21 @@ namespace DAL
                 // Add the parameters
                 command.Parameters.AddWithValue("@BankIdHash", id);
 
+                // Add output parameter
+                SqlParameter outputParam = new SqlParameter("@Result", SqlDbType.Int);
+                outputParam.Direction = ParameterDirection.Output;
+                command.Parameters.Add(outputParam);
+
                 connection.Open();
-                success = command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
+
+                // Retrieve the value of the output parameter
+                result = (int)command.Parameters["@Result"].Value;
             }
 
-            return success;
+            return result;
         }
+
 
         public int UpdateCountyNameByBankIDHash(byte[] bankIDHash, string newCountyName)
         {
@@ -521,6 +530,43 @@ namespace DAL
                 return returnValue;
             }
         }
+
+        public int SaveOpinion(byte[] bankIDHash, string proposal, string countyName, int voteFor, int voteAgainst)
+        {
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
+            {
+                SqlCommand command = new SqlCommand("pk.uspSaveOpinion", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameters
+                command.Parameters.AddWithValue("@BankIdHash", bankIDHash);
+                command.Parameters.AddWithValue("@Proposal", proposal);
+                command.Parameters.AddWithValue("@CountyName", countyName);
+                command.Parameters.AddWithValue("@VoteFor", voteFor);
+                command.Parameters.AddWithValue("@VoteAgainst", voteAgainst);
+
+                
+                // Add return parameter
+                SqlParameter returnParameter = new SqlParameter("@Result", SqlDbType.Int);
+                returnParameter.Direction = ParameterDirection.ReturnValue;
+                command.Parameters.Add(returnParameter);
+
+                System.Diagnostics.Debug.WriteLine(BitConverter.ToString(bankIDHash).Replace("-", ""));
+                System.Diagnostics.Debug.WriteLine(proposal);
+                System.Diagnostics.Debug.WriteLine(countyName);
+                System.Diagnostics.Debug.WriteLine(voteFor);
+                System.Diagnostics.Debug.WriteLine(voteAgainst);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+
+                // Capture the return value from the stored procedure
+                int returnValue = (int)returnParameter.Value;
+
+                return returnValue;
+            }
+        }
+
 
 
 

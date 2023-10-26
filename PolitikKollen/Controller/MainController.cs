@@ -178,6 +178,18 @@ namespace Controller
             return success;
         }
 
+        public int saveOpinion(byte[] id, string proposal, string county, bool voteFor, bool voteAgainst)
+        {
+            int intVoteFor = voteFor ? 1 : 0;
+            int intVoteAgainst = voteAgainst ? 1 : 0;
+
+            
+
+            int success = dal.SaveOpinion(id, county, proposal, intVoteFor, intVoteAgainst);
+            return success;
+        }
+
+
 
 
     }
