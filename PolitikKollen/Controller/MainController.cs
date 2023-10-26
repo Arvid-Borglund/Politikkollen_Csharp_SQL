@@ -156,7 +156,7 @@ namespace Controller
         public int deleteUser(byte[] id)
         {
 
-            int success = dal.deleteUser(id);
+            int success = dal.DeleteUser(id);
             return success;
         }
 
