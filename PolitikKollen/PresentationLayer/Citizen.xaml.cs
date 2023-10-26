@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,36 @@ namespace PresentationLayer
     /// </summary>
     public partial class Citizen : Window
     {
-        public Citizen()
+        Controller.MainController controller;
+        byte[] id;
+        DataTable data;
+        String userName;
+
+        public Citizen(byte[] citizen)
         {
             InitializeComponent();
+
+            this.id = citizen;
+            controller = new Controller.MainController();
+            data = controller.getCitizenData(id);
+            UpdateDataGridView();
+            userName = controller.GetCitizenName(id);
+            txtBoxUserName.Text = userName.ToString();
+
+
         }
+
+        private void UpdateDataGridView()
+        {
+            // Call the controller's method to get all counties as a DataTable
+
+
+
+            dGridCitizen.ItemsSource = data.DefaultView;
+
+        }
+
+
+
     }
 }

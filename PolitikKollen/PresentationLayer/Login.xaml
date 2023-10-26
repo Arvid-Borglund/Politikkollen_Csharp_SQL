@@ -25,5 +25,13 @@
             <!-- Submit Button -->
             <Button Content="Submit" Width="100" Click="OnSubmitClicked"/>
         </StackPanel>
+        <GroupBox x:Name="gBoxNewUserPromt" Header="GroupBox" Margin="10,134,543,135">
+            <Canvas>
+                <TextBox x:Name="txtBoxNewUser" Canvas.Left="23.576" TextWrapping="Wrap" Text="TextBox" Canvas.Top="29.496" Width="120"/>
+                <TextBox x:Name="txtBoxNewBankId" Canvas.Left="23.576" TextWrapping="Wrap" Text="TextBox" Canvas.Top="62.06" Width="120"/>
+                <ComboBox x:Name="cBoxCounty" Canvas.Left="23.576" Canvas.Top="97.9" Width="120"/>
+                <Button x:Name="btnSubmitNewUser" Content="Submit" Canvas.Left="170.155" Canvas.Top="99.9" Click="btnSubmitNewUser_Click"/>
+            </Canvas>
+        </GroupBox>
     </Grid>
 </Window>
