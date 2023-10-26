@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Citizen" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="dGridCitizen" Margin="144,93,63,47" AutoGenerateColumns="False" SelectionChanged="dGridCitizen_SelectionChanged">
+        <DataGrid x:Name="dGridCitizen" Margin="27,70,30,28" AutoGenerateColumns="False" SelectionChanged="dGridCitizen_SelectionChanged">
             <DataGrid.Columns>
                 <!-- Proposal Column -->
                 <DataGridHyperlinkColumn Header="Proposal" Binding="{Binding Proposal}" Width="*"/>
@@ -49,7 +49,7 @@
         </DataGrid>
         <Label x:Name="lblUserNameInfo" Content="" HorizontalAlignment="Left" Margin="27,26,0,0" VerticalAlignment="Top"/>
         <Canvas HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Grid Width="197" Canvas.Left="258" Canvas.Top="28">
+            <Grid Width="197" Canvas.Left="493" Canvas.Top="27">
                 <!-- Adjust Canvas.Left and Canvas.Top as needed -->
                 <!-- ComboBox set with a margin for the button to be overlayed -->
                 <ComboBox x:Name="comboUserCounty" IsEditable="true" IsDropDownOpen="False" IsHitTestVisible="False" SelectionChanged="comboUserCounty_SelectionChanged"/>
@@ -72,7 +72,7 @@
                 </Button>
             </Grid>
         </Canvas>
-        <Button x:Name="btnDeleteUser" Content="Delete User" HorizontalAlignment="Left" Margin="685,32,0,0" VerticalAlignment="Top" Click="btnDeleteUser_Click"/>
+        <Button x:Name="btnDeleteUser" Content="Delete User" HorizontalAlignment="Left" Margin="705,29,0,0" VerticalAlignment="Top" Click="btnDeleteUser_Click"/>
 
 
 

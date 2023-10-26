@@ -73,7 +73,7 @@ namespace DAL
             {
                 try
                 {
-                    return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "uspGetAllCounties");
+                    return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "pk.uspGetAllCounties");
                 }
                 catch (SqlException ex)
                 {
@@ -120,7 +120,7 @@ namespace DAL
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "uspGetProposalPrimaryKeys");
+                return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "pk.uspGetProposalPrimaryKeys");
             }
         }
 
@@ -315,7 +315,7 @@ namespace DAL
                 SqlParameter param1 = new SqlParameter("@BankIdHash", bankIdHash);
                 SqlParameter param2 = new SqlParameter("@CountyName", countyName);
 
-                return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "GetProposalData", param1, param2);
+                return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "pk.uspGetProposalData", param1, param2);
             }
         }
 
@@ -515,7 +515,7 @@ namespace DAL
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("uspUpdateCountyNameByBankIDHash", connection);
+                SqlCommand command = new SqlCommand("pk.uspUpdateCountyNameByBankIDHash", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Add parameters
@@ -556,12 +556,6 @@ namespace DAL
                 SqlParameter returnParameter = new SqlParameter("@Result", SqlDbType.Int);
                 returnParameter.Direction = ParameterDirection.ReturnValue;
                 command.Parameters.Add(returnParameter);
-
-                System.Diagnostics.Debug.WriteLine(BitConverter.ToString(bankIDHash).Replace("-", ""));
-                System.Diagnostics.Debug.WriteLine(proposal);
-                System.Diagnostics.Debug.WriteLine(countyName);
-                System.Diagnostics.Debug.WriteLine(voteFor);
-                System.Diagnostics.Debug.WriteLine(voteAgainst);
 
                 connection.Open();
                 command.ExecuteNonQuery();
