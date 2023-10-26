@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Citizen" Height="450" Width="800">
     <Grid>
-        <DataGrid AutoGenerateColumns="False">
+        <DataGrid x:Name="dGridCitizen" Margin="200,70,104,70" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <!-- Proposal Column -->
                 <DataGridHyperlinkColumn Header="Proposal" Binding="{Binding Proposal}" Width="*"/>
@@ -28,5 +28,7 @@
                 <DataGridTextColumn Header="Total Votes" Binding="{Binding TotalVotes}" Width="Auto"/>
             </DataGrid.Columns>
         </DataGrid>
+        <TextBox x:Name="txtBoxUserName" HorizontalAlignment="Left" Margin="32,28,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="cBoxUser" HorizontalAlignment="Left" Margin="32,70,0,0" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>

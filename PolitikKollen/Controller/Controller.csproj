@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\utilities\utilities.csproj" />
   </ItemGroup>
 
 </Project>

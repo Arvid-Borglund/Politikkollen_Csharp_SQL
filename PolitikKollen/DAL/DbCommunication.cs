@@ -166,7 +166,202 @@ namespace DAL
             }
         }
 
+        public byte[] GetSaltByUserName(string userName)
+        {
+            byte[] salt = null; // Initialize to null. Will store the salt value if found.
 
+            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
+            {
+                SqlCommand command = new SqlCommand("uspGetSaltByUserName", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Input parameter
+                command.Parameters.AddWithValue("@UserName", userName);
+
+                // Output parameter
+                SqlParameter saltOutputParameter = new SqlParameter("@Salt", SqlDbType.VarBinary, 64);
+                saltOutputParameter.Direction = ParameterDirection.Output;
+                command.Parameters.Add(saltOutputParameter);
+
+                connection.Open();
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+
+                // Retrieve the output parameter value
+                if (saltOutputParameter.Value != DBNull.Value)
+                {
+                    salt = (byte[])saltOutputParameter.Value;
+                }
+            }
+
+            return salt; // This will be null if no salt was found for the given UserName
+        }
+
+
+
+
+        public bool CheckCitizenExistence(byte[] bankIdHash, out string message)
+        {
+            bool exists = false; // This flag will be used to store the existence status
+            message = ""; // Initialize the message string
+
+            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection logic
+            {
+                SqlCommand command = new SqlCommand("CheckCitizenExistence", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Input parameter for BankIdHash
+                command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
+
+                // Output parameters for Exists and Message
+                SqlParameter existsOutputParameter = new SqlParameter("@Exists", SqlDbType.Bit);
+                existsOutputParameter.Direction = ParameterDirection.Output;
+                command.Parameters.Add(existsOutputParameter);
+
+                SqlParameter messageOutputParameter = new SqlParameter("@Message", SqlDbType.NVarChar, 255);
+                messageOutputParameter.Direction = ParameterDirection.Output;
+                command.Parameters.Add(messageOutputParameter);
+
+                connection.Open();
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+
+                // Retrieve the output parameter values
+                if (existsOutputParameter.Value != DBNull.Value)
+                {
+                    exists = Convert.ToBoolean(existsOutputParameter.Value);
+                }
+
+                if (messageOutputParameter.Value != DBNull.Value)
+                {
+                    message = Convert.ToString(messageOutputParameter.Value);
+                }
+            }
+
+            return exists; // This will be true if BankIdHash exists, false otherwise
+        }
+
+        public DataTable GetProposalDataAsDataTable(byte[] bankIdHash, string countyName)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection logic
+            {
+                using (SqlCommand command = new SqlCommand("GetProposalData", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Input parameters
+                    command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
+                    command.Parameters.AddWithValue("@CountyName", countyName);
+
+                    // Open the connection
+                    connection.Open();
+
+                    // Use SqlDataAdapter to fill DataTable
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        adapter.Fill(dt);
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public string GetCountyByBankIdHash(byte[] bankIdHash)
+        {
+            string countyName = null; // Initialize to null. Will store the county name if found.
+
+            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
+            {
+                SqlCommand command = new SqlCommand("GetCountyByBankIdHash", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Input parameter
+                command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
+
+                // Output parameter
+                SqlParameter countyNameOutputParameter = new SqlParameter("@CountyName", SqlDbType.VarChar, 255);
+                countyNameOutputParameter.Direction = ParameterDirection.Output;
+                command.Parameters.Add(countyNameOutputParameter);
+
+                connection.Open();
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+
+                // Retrieve the output parameter value
+                if (countyNameOutputParameter.Value != DBNull.Value)
+                {
+                    countyName = countyNameOutputParameter.Value.ToString();
+                }
+            }
+
+            return countyName; // This will be null if no county was found for the given BankIdHash
+        }
+
+        public void CreateUser(byte[] bankIdHash, string userName, byte[] salt, string county)
+        {
+            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
+            {
+                SqlCommand command = new SqlCommand("CreateUser", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameters
+                command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
+                command.Parameters.AddWithValue("@Salt", salt);
+                command.Parameters.AddWithValue("@UserName", userName);
+
+                if (county != null)
+                {
+                    command.Parameters.AddWithValue("@County", county);
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@County", DBNull.Value);
+                }
+
+                connection.Open();
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public string GetCitizenNameByUserHash(byte[] userHash)
+        {
+            string citizenName = null; // Initialize to null. Will store the citizen name if found.
+
+            using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
+             {
+                SqlCommand command = new SqlCommand("uspGetUserNameByHash", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Input parameter
+                command.Parameters.Add(new SqlParameter("@UserHash", SqlDbType.VarBinary, 64)).Value = userHash;
+
+                // Output parameter
+                SqlParameter nameOutputParameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 255);
+                nameOutputParameter.Direction = ParameterDirection.Output;
+                command.Parameters.Add(nameOutputParameter);
+
+                connection.Open();
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+
+                // Retrieve the output parameter value
+                if (nameOutputParameter.Value != DBNull.Value)
+                {
+                    citizenName = (string)nameOutputParameter.Value;
+                }
+            }
+
+            return citizenName; // This will be null if no citizen name was found for the given UserHash
+        }
 
 
     }
