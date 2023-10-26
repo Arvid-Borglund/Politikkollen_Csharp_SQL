@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,15 +25,26 @@ namespace PresentationLayer
     {
 
         private Controller.MainController controller;
+        byte[] id;
+        String AdminName;
 
-        public County()
+        public County(byte[] Admin)
         {
             InitializeComponent();
             controller = new Controller.MainController();
+            this.id = Admin;
+            pageStartup();
+        }
+
+        private void pageStartup()
+        {
+            AdminName = controller.getAdminData(id);
+            
+            lblAdminName.Content = $"Welcome ({AdminName})";
+              
             UpdateDataGridView();
         }
 
-        
 
         private void btnAddCounty_Click(object sender, RoutedEventArgs e)
         {
@@ -167,12 +179,6 @@ namespace PresentationLayer
         }
 
 
-
-        private void dGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void btnAddProposal_Click(object sender, RoutedEventArgs e)
         {
             // Check if a cell is selected in dGrid
@@ -186,6 +192,8 @@ namespace PresentationLayer
             var cellInfo = dGrid.SelectedCells[0];
             var content = cellInfo.Column.GetCellContent(cellInfo.Item);
             string selectedCellValue = (content as TextBlock)?.Text;
+            string ProposalName = txtBoxProposalName.Text;
+            string ProposalInfo = txtBoxProposalInfo.Text;
 
             // Check if txtBoxProposalInfo has a value
             if (string.IsNullOrWhiteSpace(txtBoxProposalInfo.Text))
@@ -194,8 +202,24 @@ namespace PresentationLayer
                 return;
             }
 
-            // Call the controller.AddProposal method with the values
-            controller.CreateProposal(selectedCellValue, txtBoxProposalInfo.Text);
+            // Call the controller.CreateProposal method with the values
+            int success = controller.CreateProposal(selectedCellValue, ProposalName, ProposalInfo);
+
+            if (success == 1)
+            {
+                // Proposal creation was successful
+                MessageBox.Show("Proposal created successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (success == 0)
+            {
+                // Proposal for the county already exists
+                MessageBox.Show("A proposal for the selected county already exists.", "Duplicate Proposal", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                // Handle other possible return values if needed
+                MessageBox.Show("An unexpected error occurred while creating the proposal.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             UpdateDataGridView();
         }
@@ -243,6 +267,6 @@ namespace PresentationLayer
             UpdateDataGridView();
         }
 
-    }
+    }//PROPOSAL NAMN
 
 }

@@ -7,13 +7,14 @@
         mc:Ignorable="d"
         Title="County" Height="450" Width="800">
     <Grid>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="290*"/>
             <ColumnDefinition Width="511*"/>
         </Grid.ColumnDefinitions>
         <TextBox x:Name="txtBoxAddCounty" HorizontalAlignment="Left" Margin="80,287,0,0" TextWrapping="Wrap" Text="Add county" VerticalAlignment="Top" Width="120" Background="White" SelectionOpacity="0.1"/>
         <Button x:Name="btnAddCounty" Content="Add County" HorizontalAlignment="Left" Margin="80,326,0,0" VerticalAlignment="Top" Width="76" Click="btnAddCounty_Click"/>
-        <DataGrid x:Name="dGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="80,83,70,167" SelectionChanged="dGrid_SelectionChanged" AutoGenerateColumns="False" GridLinesVisibility="Horizontal">
+        <DataGrid x:Name="dGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="80,83,70,167"  AutoGenerateColumns="False" GridLinesVisibility="Horizontal">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="County Name" Binding="{Binding CountyName}" MinWidth="100"/>
                 <DataGridTemplateColumn>
@@ -38,7 +39,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Label x:Name="lblOutPut" Content="TESTOUTPUT" HorizontalAlignment="Left" Margin="60,384,0,0" VerticalAlignment="Top" Width="180"/>
-        <DataGrid x:Name="dGridProposals" Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="74,83,59,217" AutoGenerateColumns="False">
+        <DataGrid x:Name="dGridProposals" Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="74,83,67,217" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="County Name" Binding="{Binding CountyName}" MinWidth="100"/>
                 <DataGridTextColumn Header="Proposal Name" Binding="{Binding Proposal}" MinWidth="100"/>
@@ -83,8 +84,12 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="txtBoxProposalInfo" Grid.Column="1" HorizontalAlignment="Center" Margin="0,235,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="392" Height="101"/>
+        <TextBox x:Name="txtBoxProposalInfo" Grid.Column="1" HorizontalAlignment="Left" Margin="74,249,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="274" Height="115"/>
         <Button x:Name="btnAddProposal" Grid.Column="1" Content="Add Proposal" HorizontalAlignment="Left" Margin="74,369,0,0" VerticalAlignment="Top" Height="28" Width="91" Click="btnAddProposal_Click"/>
+        <Label x:Name="lblAdminName" Content="Label" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtBoxProposalName" Grid.Column="1" HorizontalAlignment="Left" Margin="74,222,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="274" Height="22"/>
+        <Label Grid.Column="1" Content="Proposal Name" HorizontalAlignment="Left" Margin="353,220,0,0" VerticalAlignment="Top" Width="104"/>
+        <Label Grid.Column="1" Content="Information" HorizontalAlignment="Left" Margin="353,251,0,0" VerticalAlignment="Top" Width="90" Height="24"/>
 
     </Grid>
 </Window>

@@ -16,7 +16,7 @@ namespace DAL
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("uspAddCounty", connection);
+                SqlCommand command = new SqlCommand("pk.uspAddCounty", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@CountyName", county);
 
@@ -41,7 +41,7 @@ namespace DAL
 
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("uspGetAllCounties", connection);
+                SqlCommand command = new SqlCommand("pk.uspGetAllCounties", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 connection.Open();
@@ -59,7 +59,7 @@ namespace DAL
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("uspDeleteCounty", connection);
+                SqlCommand command = new SqlCommand("pk.uspDeleteCounty", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Add the CountyName parameter to the command
@@ -86,7 +86,7 @@ namespace DAL
 
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("uspGetProposalPrimaryKeys", connection);
+                SqlCommand command = new SqlCommand("pk.uspGetProposalPrimaryKeys", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 connection.Open();
@@ -104,7 +104,7 @@ namespace DAL
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("uspCreateProposal", connection);
+                SqlCommand command = new SqlCommand("pk.uspCreateProposal", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Add the parameters
@@ -112,19 +112,35 @@ namespace DAL
                 command.Parameters.AddWithValue("@Proposal", proposal);
                 command.Parameters.AddWithValue("@Info", info);
 
+                // Output parameter for @Result
+                SqlParameter resultOutputParameter = new SqlParameter("@Result", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(resultOutputParameter);
+
                 connection.Open();
 
-                // Since you're inserting data, you can use ExecuteNonQuery which returns the number of rows affected.
-                // If the insertion is successful, it should return 1. Otherwise, it might return 0.
-                return command.ExecuteNonQuery();
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+
+                // Retrieve the output parameter's value
+                if (resultOutputParameter.Value != DBNull.Value)
+                {
+                    return (int)resultOutputParameter.Value;
+                }
+
+                // Handle the case where the output parameter is DBNull.Value (null)
+                return -1; // You can choose an appropriate error code or value here
             }
         }
+
 
         public int DeleteProposal(string countyName, string proposal)
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("uspDeleteProposal", connection);
+                SqlCommand command = new SqlCommand("pk.uspDeleteProposal", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Add the parameters
@@ -143,7 +159,7 @@ namespace DAL
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
-                SqlCommand command = new SqlCommand("uspEditProposal", connection);
+                SqlCommand command = new SqlCommand("pk.uspEditProposal", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Add parameters
@@ -166,17 +182,31 @@ namespace DAL
             }
         }
 
-        public byte[] GetSaltByUserName(string userName)
+        public byte[] GetSaltByUserName(string userName, String type)
         {
             byte[] salt = null; // Initialize to null. Will store the salt value if found.
 
+            String call = "";
+            String Value = "";
+
+            if (type.Equals("User"))
+            {
+                call = "pk.uspGetSaltByUserName";
+                Value = "@UserName";
+            }
+            else if (type.Equals("Admin"))
+            {
+                call = "pk.uspGetSaltByAdminName";
+                Value = "@AdminName";
+            }
+
             using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
             {
-                SqlCommand command = new SqlCommand("uspGetSaltByUserName", connection);
+                SqlCommand command = new SqlCommand(call, connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Input parameter
-                command.Parameters.AddWithValue("@UserName", userName);
+                command.Parameters.AddWithValue(Value, userName);
 
                 // Output parameter
                 SqlParameter saltOutputParameter = new SqlParameter("@Salt", SqlDbType.VarBinary, 64);
@@ -201,14 +231,25 @@ namespace DAL
 
 
 
-        public bool CheckCitizenExistence(byte[] bankIdHash, out string message)
+        public bool CheckCitizenExistence(byte[] bankIdHash, String type, out string message)
         {
             bool exists = false; // This flag will be used to store the existence status
             message = ""; // Initialize the message string
 
+            String call = "";
+
+            if (type.Equals("User"))
+            {
+                call = "pk.uspCheckCitizenExistence";
+            }
+            else if (type.Equals("Admin"))
+            {
+                call = "pk.uspCheckAdminExistence";
+            }
+
             using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection logic
             {
-                SqlCommand command = new SqlCommand("CheckCitizenExistence", connection);
+                SqlCommand command = new SqlCommand(call, connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Input parameter for BankIdHash
@@ -249,7 +290,7 @@ namespace DAL
 
             using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection logic
             {
-                using (SqlCommand command = new SqlCommand("GetProposalData", connection))
+                using (SqlCommand command = new SqlCommand("pk.uspGetProposalData", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
@@ -277,7 +318,7 @@ namespace DAL
 
             using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
             {
-                SqlCommand command = new SqlCommand("GetCountyByBankIdHash", connection);
+                SqlCommand command = new SqlCommand("pk.uspGetCountyByBankIdHash", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Input parameter
@@ -307,7 +348,7 @@ namespace DAL
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
             {
-                SqlCommand command = new SqlCommand("CreateUser", connection);
+                SqlCommand command = new SqlCommand("pk.uspCreateUser", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Add parameters
@@ -331,21 +372,92 @@ namespace DAL
             }
         }
 
-        public string GetCitizenNameByUserHash(byte[] userHash)
+        public void CreateAdmin(byte[] bankIdHash, string AdminName, byte[] salt)
         {
-            string citizenName = null; // Initialize to null. Will store the citizen name if found.
-
             using (SqlConnection connection = ConnectionHandler.GetConnection()) // Replace with your actual connection handling logic
-             {
-                SqlCommand command = new SqlCommand("uspGetUserNameByHash", connection);
+            {
+                SqlCommand command = new SqlCommand("pk.uspCreateAdmin", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameters
+                command.Parameters.AddWithValue("@BankIdHash", bankIdHash);
+                command.Parameters.AddWithValue("@Salt", salt);
+                command.Parameters.AddWithValue("@AdminName", AdminName);
+
+                connection.Open();
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+            }
+        }
+
+
+        public (string CitizenName, string CountyName) GetCitizenDataByUserHash(byte[] userHash)
+        {
+            string citizenName = null;
+            string countyName = null; // Initialize countyName at the start of the method
+
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
+            {
+                SqlCommand command = new SqlCommand("pk.uspGetUserDetailsByHash", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 // Input parameter
                 command.Parameters.Add(new SqlParameter("@UserHash", SqlDbType.VarBinary, 64)).Value = userHash;
 
-                // Output parameter
-                SqlParameter nameOutputParameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 255);
-                nameOutputParameter.Direction = ParameterDirection.Output;
+                // Output parameters
+                SqlParameter nameOutputParameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 255)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(nameOutputParameter);
+
+                SqlParameter countyNameOutputParameter = new SqlParameter("@County", SqlDbType.NVarChar, 255)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(countyNameOutputParameter);
+
+                connection.Open();
+
+                // Execute the stored procedure
+                command.ExecuteNonQuery();
+
+                // Retrieve the output parameters' values
+                if (nameOutputParameter.Value != DBNull.Value)
+                {
+                    citizenName = (string)nameOutputParameter.Value;
+                }
+                if (countyNameOutputParameter.Value != DBNull.Value)
+                {
+                    countyName = (string)countyNameOutputParameter.Value;
+                }
+            }
+
+            return (citizenName, countyName);
+        }
+
+        public string GetAdminDataByUserHash(byte[] userHash)
+        {
+            string adminName = null;
+
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
+            {
+                SqlCommand command = new SqlCommand("pk.uspGetAdminDetailsByHash", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Input parameter
+                SqlParameter userHashParameter = new SqlParameter("@UserHash", SqlDbType.VarBinary, 64)
+                {
+                    Value = userHash
+                };
+                command.Parameters.Add(userHashParameter);
+
+                // Output parameter for Admin Name
+                SqlParameter nameOutputParameter = new SqlParameter("@UserName", SqlDbType.NVarChar, 255)
+                {
+                    Direction = ParameterDirection.Output
+                };
                 command.Parameters.Add(nameOutputParameter);
 
                 connection.Open();
@@ -353,15 +465,63 @@ namespace DAL
                 // Execute the stored procedure
                 command.ExecuteNonQuery();
 
-                // Retrieve the output parameter value
+                // Retrieve the output parameter's value
                 if (nameOutputParameter.Value != DBNull.Value)
                 {
-                    citizenName = (string)nameOutputParameter.Value;
+                    adminName = (string)nameOutputParameter.Value;
                 }
             }
 
-            return citizenName; // This will be null if no citizen name was found for the given UserHash
+            return adminName;
         }
+
+
+        public int deleteUser(byte[] id)
+        {
+
+            int success = 0;
+
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
+            {
+                SqlCommand command = new SqlCommand("pk.uspDeleteCitizen", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add the parameters
+                command.Parameters.AddWithValue("@BankIdHash", id);
+
+                connection.Open();
+                success = command.ExecuteNonQuery();
+            }
+
+            return success;
+        }
+
+        public int UpdateCountyNameByBankIDHash(byte[] bankIDHash, string newCountyName)
+        {
+            using (SqlConnection connection = ConnectionHandler.GetConnection())
+            {
+                SqlCommand command = new SqlCommand("uspUpdateCountyNameByBankIDHash", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Add parameters
+                command.Parameters.AddWithValue("@BankIDHash", bankIDHash);
+                command.Parameters.AddWithValue("@NewCountyName", newCountyName);
+
+                // Add return parameter
+                SqlParameter returnParameter = new SqlParameter("@Result", SqlDbType.Int);
+                returnParameter.Direction = ParameterDirection.Output;
+                command.Parameters.Add(returnParameter);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+
+                // Capture the return value from the stored procedure
+                int returnValue = (int)returnParameter.Value;
+
+                return returnValue;
+            }
+        }
+
 
 
     }
