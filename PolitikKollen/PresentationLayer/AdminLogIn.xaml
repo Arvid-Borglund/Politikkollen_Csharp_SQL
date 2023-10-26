@@ -7,10 +7,12 @@
         mc:Ignorable="d"
         Title="AdminLogIn" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="txtBoxAdminName" HorizontalAlignment="Center" Margin="0,178,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="152"/>
-        <TextBox x:Name="txtBoxAdminBankId" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Center" Width="152"/>
+        <TextBox x:Name="txtBoxAdminName" HorizontalAlignment="Center" Margin="0,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="152"/>
+        <TextBox x:Name="txtBoxAdminBankId" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Width="152"/>
         <Button x:Name="btnAdminSubmit" Content="LogIn" HorizontalAlignment="Left" Margin="324,231,0,0" VerticalAlignment="Top" Width="60" Click="btnAdminSubmit_Click"/>
         <Button x:Name="btnCreateAdmin" Content="Create Admin" HorizontalAlignment="Left" Margin="398,231,0,0" VerticalAlignment="Top" Width="78" Click="btnCreateAdmin_Click"/>
+        <Label Content="User name" HorizontalAlignment="Left" Margin="481,173,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Bank ID" HorizontalAlignment="Left" Margin="481,0,0,0" VerticalAlignment="Center" Width="71"/>
 
     </Grid>
 </Window>

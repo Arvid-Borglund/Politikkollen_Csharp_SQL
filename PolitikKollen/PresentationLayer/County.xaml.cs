@@ -25,20 +25,20 @@ namespace PresentationLayer
     {
 
         private Controller.MainController controller;
-        byte[] id;
+        byte[] Id;
         String AdminName;
 
         public County(byte[] Admin)
         {
             InitializeComponent();
             controller = new Controller.MainController();
-            this.id = Admin;
+            this.Id = Admin;
             pageStartup();
         }
 
         private void pageStartup()
         {
-            AdminName = controller.getAdminData(id);
+            AdminName = controller.getAdminData(Id);
             
             lblAdminName.Content = $"Welcome ({AdminName})";
               
@@ -78,7 +78,7 @@ namespace PresentationLayer
             
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteCountyButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             DataRowView dataRow = (DataRowView)button.DataContext;
@@ -144,7 +144,7 @@ namespace PresentationLayer
             }
         }
 
-
+        /*
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
@@ -177,7 +177,7 @@ namespace PresentationLayer
             }
 
         }
-
+        */
 
         private void btnAddProposal_Click(object sender, RoutedEventArgs e)
         {

@@ -73,7 +73,9 @@ namespace DAL
             {
                 try
                 {
-                    return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "uspGetAllCounties");
+
+                    return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "pk.uspGetAllCounties");
+
                 }
                 catch (SqlException ex)
                 {
@@ -152,6 +154,7 @@ namespace DAL
         {
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
+
                 try
                 {
                     return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "uspGetProposalPrimaryKeys");
@@ -168,6 +171,7 @@ namespace DAL
                     ErrorHandler.HandleException(ex);
                     throw; // Rethrow the exception after handling
                 }
+
             }
         }
 
@@ -514,7 +518,9 @@ namespace DAL
                 SqlParameter param1 = new SqlParameter("@BankIdHash", bankIdHash);
                 SqlParameter param2 = new SqlParameter("@CountyName", countyName);
 
-                return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "GetProposalData", param1, param2);
+
+                return DataAdapterHelper.ExecuteProcedureForDataTable(connection, "pk.uspGetProposalData", param1, param2);
+
             }
         }
 
@@ -910,10 +916,14 @@ namespace DAL
 
             using (SqlConnection connection = ConnectionHandler.GetConnection())
             {
+
                 try
                 {
-                    SqlCommand command = new SqlCommand("uspUpdateCountyNameByBankIDHash", connection);
-                    command.CommandType = CommandType.StoredProcedure;
+                    
+
+                SqlCommand command = new SqlCommand("pk.uspUpdateCountyNameByBankIDHash", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
 
                     // Add parameters
                     command.Parameters.AddWithValue("@BankIDHash", bankIDHash);
@@ -986,6 +996,7 @@ namespace DAL
                     transaction = DataAdapterHelper.BeginTransaction(connection);
                     command.Transaction = transaction; // Set the transaction for the command
 
+
                     command.ExecuteNonQuery();
 
                     // Commit the transaction using the helper method
@@ -999,6 +1010,8 @@ namespace DAL
                     // Handle the SQL exception and rollback
                     if (transaction != null)
                         DataAdapterHelper.RollbackTransaction(transaction);
+
+
 
                     ErrorHandler.HandleSqlException(ex);
                     throw; // Rethrow the exception after handling
