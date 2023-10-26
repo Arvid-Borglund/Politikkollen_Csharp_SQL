@@ -29,7 +29,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Width="12" Height="12" Click="SaveOpinionButton_Click" Background="Transparent" BorderBrush="Transparent" Cursor="Hand">
+                            <Button Width="12" Height="12" Click="SaveOpinionButton_Click" Background="Transparent" BorderBrush="Transparent" Cursor="Hand" >
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
 
@@ -55,7 +55,7 @@
                 <ComboBox x:Name="comboUserCounty" IsEditable="true" IsDropDownOpen="False" IsHitTestVisible="False" SelectionChanged="comboUserCounty_SelectionChanged"/>
 
                 <!-- Overlayed button on top of the ComboBox at its right end -->
-                <Button Width="25" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Click="SaveOpinionButton_Click">
+                <Button Width="25" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Click="EditUserCountyButton_Click">
                     <Button.Resources>
                         <!-- Style for the Image to change its opacity when the button is hovered -->
                         <Style TargetType="Image">

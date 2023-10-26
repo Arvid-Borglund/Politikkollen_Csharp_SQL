@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <TextBox x:Name="txtBoxAddCounty" HorizontalAlignment="Left" Margin="80,245,0,0" TextWrapping="Wrap" Text="Add county" VerticalAlignment="Top" Width="120" Background="White" SelectionOpacity="0.1"/>
         <Button x:Name="btnAddCounty" Content="Add County" HorizontalAlignment="Left" Margin="80,268,0,0" VerticalAlignment="Top" Width="76" Click="btnAddCounty_Click"/>
-        <DataGrid x:Name="dGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="80,41,70,209"  AutoGenerateColumns="False" GridLinesVisibility="Horizontal">
+        <DataGrid x:Name="dGrid" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="80,41,30,209"  AutoGenerateColumns="False" GridLinesVisibility="Horizontal">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="County Name" Binding="{Binding CountyName}" MinWidth="100"/>
                 <DataGridTemplateColumn>
@@ -84,10 +84,10 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="txtBoxProposalInfo" Grid.Column="1" HorizontalAlignment="Left" Margin="74,249,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="294" Height="115"/>
+        <TextBox x:Name="txtBoxProposalInfo" Grid.Column="1" HorizontalAlignment="Left" Margin="74,249,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="115"/>
         <Button x:Name="btnAddProposal" Grid.Column="1" Content="Add Proposal" HorizontalAlignment="Left" Margin="74,369,0,0" VerticalAlignment="Top" Height="28" Width="91" Click="btnAddProposal_Click"/>
         <Label x:Name="lblAdminName" Content="" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtBoxProposalName" Grid.Column="1" HorizontalAlignment="Left" Margin="74,222,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="294" Height="22"/>
+        <TextBox x:Name="txtBoxProposalName" Grid.Column="1" HorizontalAlignment="Left" Margin="74,222,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="294" Height="22"/>
         <Label Grid.Column="1" Content="Proposal Name" HorizontalAlignment="Left" Margin="373,218,0,0" VerticalAlignment="Top" Width="104" RenderTransformOrigin="0.507,0.502"/>
         <Label Grid.Column="1" Content="Information" HorizontalAlignment="Left" Margin="387,253,0,0" VerticalAlignment="Top" Width="90" Height="24" RenderTransformOrigin="0.882,0.585"/>
 
