@@ -148,9 +148,49 @@ namespace PresentationLayer
 
         private void SaveOpinionButton_Click(object sender, RoutedEventArgs e)
         {
+            Button button = (Button)sender;
+            DataRowView dataRow = (DataRowView)button.DataContext;
+            dGridCitizen.CommitEdit(DataGridEditingUnit.Row, true);
+
+           
+
+
+            string proposal = dataRow["Proposal"].ToString();
             
+            bool voteFor = Convert.ToBoolean(dataRow["VoteFor"]);    // Assuming VoteFor is stored as bool or bit in the DB
+            bool voteAgainst = Convert.ToBoolean(dataRow["VoteAgainst"]);  // Assuming VoteAgainst is stored as bool or bit in the DB
+
+            MessageBox.Show($"{proposal}, {id}, {userCounty}, {voteFor}, {voteAgainst}");
+
+            
+            // Check to ensure only one checkbox is checked
+            if (voteFor && voteAgainst)
+            {
+                MessageBox.Show("You cannot vote both for and against a proposal. Please select only one.", "Invalid Selection", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            
+
+            int success = controller.saveOpinion(id, userCounty, proposal, voteFor, voteAgainst);
+
+            if (success == 0)
+            {
+                MessageBox.Show("Opinion saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (success == 1)
+            {
+                MessageBox.Show("Failed to save the opinion.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBox.Show("Unexpected return value.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            UpdateDataGridView(); 
             
         }
+
+
+
 
     }
 }
